@@ -4,6 +4,7 @@ const webpack = require('webpack')
 const config = require('../config')
 const merge = require('webpack-merge')
 const path = require('path')
+const express = require('express')
 const baseWebpackConfig = require('./webpack.base.conf')
 const CopyWebpackPlugin = require('copy-webpack-plugin')
 const HtmlWebpackPlugin = require('html-webpack-plugin')
@@ -12,6 +13,24 @@ const portfinder = require('portfinder')
 
 const HOST = process.env.HOST
 const PORT = process.env.PORT && Number(process.env.PORT)
+
+const app = express() // 请求server
+
+const appData = require('../data.json'); // 加载本地数据文件
+const seller = appData.seller; // 获取对应的本地数据
+const goods = appData.goods;
+const ratings = appData.ratings;
+
+var apiRoutes = express.Router();
+
+app.use('/api', apiRoutes) // 通过路由请求数据
+
+
+/*
+
+
+
+*/
 
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
@@ -42,6 +61,28 @@ const devWebpackConfig = merge(baseWebpackConfig, {
     quiet: true, // necessary for FriendlyErrorsPlugin
     watchOptions: {
       poll: config.dev.poll,
+    },
+    before(app) {
+      app.get('/api/seller', function (req, res) {
+        res.json({
+          errno: 0,
+          data: seller
+        }); // 接口返回json数据,上面配置的数据seller就赋值给data请求后调用
+      });
+
+      app.get('/api/goods', function (req, res) {
+        res.json({
+          errno: 0,
+          data: goods
+        });
+      });
+
+      app.get('/api/ratings', function (req, res) {
+        res.json({
+          errno: 0,
+          data: ratings
+        });
+      });
     }
   },
   plugins: [
