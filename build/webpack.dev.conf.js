@@ -26,12 +26,6 @@ var apiRoutes = express.Router();
 app.use('/api', apiRoutes) // 通过路由请求数据
 
 
-/*
-
-
-
-*/
-
 const devWebpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({ sourceMap: config.dev.cssSourceMap, usePostCSS: true })
@@ -63,21 +57,21 @@ const devWebpackConfig = merge(baseWebpackConfig, {
       poll: config.dev.poll,
     },
     before(app) {
-      app.get('/api/seller', function (req, res) {
+      app.get('/seller', function (req, res) {
         res.json({
           errno: 0,
           data: seller
-        }); // 接口返回json数据,上面配置的数据seller就赋值给data请求后调用
+        });
       });
 
-      app.get('/api/goods', function (req, res) {
+      app.get('/goods', function (req, res) {
         res.json({
           errno: 0,
           data: goods
         });
       });
 
-      app.get('/api/ratings', function (req, res) {
+      app.get('/ratings', function (req, res) {
         res.json({
           errno: 0,
           data: ratings
