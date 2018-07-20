@@ -24,7 +24,7 @@
 <script type="text/ecmascript-6">
   import header from './components/header/header.vue';
 
-  const errok = 0;
+  const ERR_OK = 0;
 
   export default {
     data: function () {
@@ -35,9 +35,8 @@
     created: function () {
       this.$http.get('/seller').then((response) => {
         response = response.body;
-        if (response.errno === errok) {
+        if (response.errno === ERR_OK) {
           this.seller = response.data;
-          console.log(this.seller);
         }
       });
     },
