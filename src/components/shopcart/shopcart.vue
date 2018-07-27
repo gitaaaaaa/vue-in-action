@@ -32,9 +32,9 @@
           <h1 class="title">购物车</h1>
           <span class="empty">清空</span>
         </div>
-        <div class="list-content">
+        <div class="list-content" ref="listContent">
           <ul>
-            <li class="food" v-for="(food,index) in selectFoods" :key="index">
+            <li class="food border-1px" v-for="(food,index) in selectFoods" :key="index">
               <span class="name">{{food.name}}</span>
               <div class="price">
                 <span>¥{{food.price * food.count}}</span>
@@ -51,6 +51,7 @@
 </template>
 
 <script type="text/ecmascript-6">
+  import BScroll from 'better-scroll';
   import cartcontrol from 'components/cartcontrol/cartcontrol';
 
   export default {
@@ -119,6 +120,17 @@
           return false;
         }
         let show = !this.fold;
+        if (show) {
+          this.$nextTick(() => {
+            if (!this.scroll) {
+              this.scroll = new BScroll(this.$ref.listContent, {
+                click: true
+              });
+            } else {
+              this.scroll.refresh();
+            }
+          });
+        }
         return show;
       }
     },
@@ -194,6 +206,7 @@
 </script>
 
 <style lang="stylus">
+  @import '../../common/stylus/mixin'
   .shopcart
     position: fixed
     left: 0
@@ -303,8 +316,7 @@
       &.fold-enter-active, &.fold-leave-active
         transition: all 0.5s
         transform: translate3d(0, -100%, 0);
-    // 整个列表相对于当前的高度做一个偏移
-      &.fold-enter, &.fold-leave-acitve
+      &.fold-enter, &.fold-leave-active
         transform: translate3d(0, 0, 0);
       .list-header
         height: 40px
@@ -325,4 +337,25 @@
         max-height: 217px
         overflow: hidden
         background-color: #fff
+        .food
+          position: relative
+          padding: 12px
+          box-sizing: border-box;
+          border-1px(rgba(7, 17, 27, .1))
+          .name
+            line-height 24px
+            font-size: 14px
+            color: rgb(7, 17, 27)
+          .price
+            position: absolute
+            right: 90px
+            bottom: 12px
+            line-height 24px
+            font-size: 14px
+            font-weight 700
+            color: rgb(240, 20, 20)
+          .cartcontrol-wrapper
+            position absolute
+            right: 0
+            bottom: 6px
 </style>
