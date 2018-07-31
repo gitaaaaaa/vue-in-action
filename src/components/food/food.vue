@@ -142,7 +142,7 @@
     },
     filters: {
       formatDate (time) {
-        let date = new Date(time);
+        let data = new Date(time);
         return formatDate(data, 'yyyy-MM-dd hh:mm');
       }
     },
