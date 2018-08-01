@@ -142,8 +142,8 @@
     },
     filters: {
       formatDate (time) {
-        let data = new Date(time);
-        return formatDate(data, 'yyyy-MM-dd hh:mm');
+        let date = new Date(time);
+        return formatDate(date, 'yyyy-MM-dd hh:mm');
       }
     },
     components: {
