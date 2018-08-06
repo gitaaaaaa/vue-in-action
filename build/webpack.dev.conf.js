@@ -23,7 +23,7 @@ const ratings = appData.ratings;
 
 var apiRoutes = express.Router();
 
-app.use('/api', apiRoutes) // 通过路由请求数据
+app.use('/api', apiRoutes); // 通过路由请求数据
 
 
 const devWebpackConfig = merge(baseWebpackConfig, {
