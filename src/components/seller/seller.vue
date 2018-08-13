@@ -46,8 +46,8 @@
       <div class="pics">
         <div class="title">商家实景</div>
         <div class="pic-wrapper">
-          <ul class="pic-list">
-            <li class="pic-item" v-for="(pic,index) in seller.pics" :key="index">
+          <ul class="pic-list" :ref="picList">
+            <li class="pic-item" v-for="(pic, index) in seller.pics" :key="index">
               <img :src="pic" width="120" height="90">
             </li>
           </ul>
@@ -81,6 +81,12 @@
     mounted: function () {
       this.$nextTick(() => {
         this._initScroll();
+        if (this.seller.pics) {
+          let picWidth = 120;
+          let margin = 6;
+          let width = (picWidth + margin) * this.seller.pics.width - margin;
+          this.$refs.picList.style.width = width + 'px';
+        }
       });
     },
     methods: {
@@ -197,12 +203,21 @@
             color: rgb(7, 17, 27)
     .pics
       padding: 18px
+      padding-right: 0
       .title
         margin-bottom 8px
         line-height: 14px
         color: rgb(7, 17, 27)
         font-size: 14px
       .pic-wrapper
+        width: 100%
+        overflow: hidden
+        white-space: nowrap
         .pic-list
+          font-size: 0
           .pic-item
+            display: inline-block
+            margin-right: 6px
+            width: 120px
+            height: 90px
 </style>
