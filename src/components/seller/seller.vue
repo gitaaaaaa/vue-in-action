@@ -45,8 +45,8 @@
       <split></split>
       <div class="pics">
         <div class="title">商家实景</div>
-        <div class="pic-wrapper">
-          <ul class="pic-list" :ref="picList">
+        <div class="pic-wrapper" ref="picWrapper">
+          <ul class="pic-list" ref="picList">
             <li class="pic-item" v-for="(pic, index) in seller.pics" :key="index">
               <img :src="pic" width="120" height="90">
             </li>
@@ -75,18 +75,14 @@
       'seller' () {
         this.$nextTick(() => {
           this._initScroll();
+          this._initPics();
         });
       }
     },
     mounted: function () {
       this.$nextTick(() => {
         this._initScroll();
-        if (this.seller.pics) {
-          let picWidth = 120;
-          let margin = 6;
-          let width = (picWidth + margin) * this.seller.pics.width - margin;
-          this.$refs.picList.style.width = width + 'px';
-        }
+        this._initPics();
       });
     },
     methods: {
@@ -97,6 +93,20 @@
           });
         } else {
           this.scroll.refresh();
+        }
+      },
+      _initPics() {
+        if (this.seller.pics) {
+          let picWidth = 120;
+          let margin = 6;
+          let width = (picWidth + margin) * this.seller.pics.length - margin;
+          this.$refs.picList.style.width = width + 'px';
+          this.$nextTick(() => {
+            this.picScroll = new BScroll(this.$refs.picWrapper, {
+              scrollX: true,
+              eventPassthrough: 'vertical'
+            });
+          });
         }
       }
     },
@@ -203,7 +213,6 @@
             color: rgb(7, 17, 27)
     .pics
       padding: 18px
-      padding-right: 0
       .title
         margin-bottom 8px
         line-height: 14px
@@ -220,4 +229,6 @@
             margin-right: 6px
             width: 120px
             height: 90px
+            &:last-child
+              margin 0
 </style>
