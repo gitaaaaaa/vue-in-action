@@ -103,6 +103,28 @@
         fold: true // 折叠
       };
     },
+    watch: {
+      totalCount: function () {
+        if (!this.totalCount) {
+          this.fold = true;
+          return false;
+        }
+      },
+      fold: function () {
+        let show = !this.fold;
+        if (show) {
+          this.$nextTick(() => {
+            if (!this.scroll) {
+              this.scroll = new BScroll(this.$refs.listContent, {
+                click: true
+              });
+            } else {
+              this.scroll.refresh();
+            }
+          });
+        }
+      }
+    },
     computed: {
       totalPrice () {
         let total = 0;
@@ -137,21 +159,9 @@
       },
       listShow () {
         if (!this.totalCount) {
-          this.fold = true;
           return false;
         }
         let show = !this.fold;
-        if (show) {
-          this.$nextTick(() => {
-            if (!this.scroll) {
-              this.scroll = new BScroll(this.$refs.listContent, {
-                click: true
-              });
-            } else {
-              this.scroll.refresh();
-            }
-          });
-        }
         return show;
       }
     },
@@ -173,21 +183,21 @@
         }
         this.fold = !this.fold;
       },
-      hideList() {
+      hideList () {
         this.fold = true;
       },
-      empty() {
+      empty () {
         this.selectFoods.forEach((food) => {
           food.count = 0;
         });
       },
-      pay() {
+      pay () {
         if (this.totalPrice < this.minPrice) {
           return;
         }
         window.alert(`支付${this.totalPrice}元`);
       },
-      addFood(target) {
+      addFood (target) {
         this.drop(target);
       },
       // --------
@@ -395,6 +405,7 @@
             position absolute
             right: 0
             bottom: 6px
+
   .list-mask
     position: fixed
     top: 0
